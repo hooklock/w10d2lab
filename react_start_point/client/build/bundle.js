@@ -19820,8 +19820,21 @@
 	      React.createElement(
 	        "p",
 	        null,
+	        "Capital: ",
+	        this.props.country.capital
+	      ),
+	      React.createElement(
+	        "p",
+	        null,
 	        " Population: ",
 	        this.props.country.population
+	      ),
+	      React.createElement(
+	        "p",
+	        null,
+	        " Area: ",
+	        this.props.country.area,
+	        "km²"
 	      )
 	    );
 	  }
