@@ -8,7 +8,8 @@ var CountryDisplay = React.createClass({
     return(
       <div>
         <h4>Name: {this.props.country.name} </h4>
-      <p> Population: {this.props.country.population}</p>
+        <p> Population: {this.props.country.population}</p>
+      
       </div>
     )
   }
