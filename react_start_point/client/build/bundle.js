@@ -19696,13 +19696,15 @@
 	var React = __webpack_require__(1);
 	var CountriesSelector = __webpack_require__(160);
 	var CountryDisplay = __webpack_require__(161);
+	var CountryBorders = __webpack_require__(163);
 	
 	var CountriesBox = React.createClass({
 	  displayName: "CountriesBox",
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { countries: [], displayCountry: null };
+	    return { countries: [],
+	      displayCountry: null };
 	  },
 	
 	  setDisplayCountry: function setDisplayCountry(country) {
@@ -19721,15 +19723,28 @@
 	    request.send();
 	  },
 	
+	  getBorderingCountries: function getBorderingCountries() {
+	    //map through the array of border country
+	    var borderingCountries = this.state.displayCountry.borders.map(function (border) {
+	      //find the country object that has the same alpha 3 code as the border country
+	      return this.state.countries.find(function (country) {
+	        return country.alpha3Code === border;
+	      });
+	    }.bind(this));
+	    return borderingCountries;
+	  },
+	
 	  render: function render() {
 	    var displayElement = React.createElement(
 	      "h4",
 	      null,
 	      "No Country Selected"
 	    );
+	
 	    if (this.state.displayCountry) {
-	      displayElement = React.createElement(CountryDisplay, { country: this.state.displayCountry });
-	    }
+	      displayElement = React.createElement(CountryDisplay, { country: this.state.displayCountry, borderingCountries: this.getBorderingCountries() });
+	    };
+	
 	    return React.createElement(
 	      "div",
 	      null,
@@ -19800,12 +19815,22 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
+	var CountryBorders = __webpack_require__(163);
 	
 	var CountryDisplay = React.createClass({
 	  displayName: "CountryDisplay",
 	
 	
+	  // getInitialState: function(){
+	  //   return {borders: []}
+	  // },
+	
 	  render: function render() {
+	
+	    // var borderList = this.props.country.borders.map(function(shortcode){
+	    //   console.log(country);
+	    //   return (<p key={country.alpha2Code}>{shortcode}</p>);
+	    // })
 	
 	    return React.createElement(
 	      "div",
@@ -19813,7 +19838,6 @@
 	      React.createElement(
 	        "h4",
 	        null,
-	        "Name: ",
 	        this.props.country.name,
 	        " "
 	      ),
@@ -19826,22 +19850,79 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        " Population: ",
+	        "Population: ",
 	        this.props.country.population
 	      ),
 	      React.createElement(
 	        "p",
 	        null,
-	        " Area: ",
+	        "Area: ",
 	        this.props.country.area,
 	        "km²"
-	      )
+	      ),
+	      React.createElement(CountryBorders, { borders: this.props.borderingCountries })
 	    );
 	  }
 	
 	});
 	
 	module.exports = CountryDisplay;
+
+/***/ },
+/* 162 */,
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var CountryBorders = React.createClass({
+	  displayName: "CountryBorders",
+	
+	
+	  render: function render() {
+	
+	    var borderItems = this.props.borders.map(function (border) {
+	      return React.createElement(
+	        "div",
+	        { key: border.alpha3Code },
+	        React.createElement(
+	          "h4",
+	          null,
+	          " ",
+	          border.name,
+	          " "
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          "Capital: ",
+	          border.capital
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          "Population: ",
+	          border.population
+	        )
+	      );
+	    });
+	
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h4",
+	        null,
+	        "Bordering Countries"
+	      ),
+	      borderItems
+	    );
+	  }
+	});
+	
+	module.exports = CountryBorders;
 
 /***/ }
 /******/ ]);
